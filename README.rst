@@ -68,8 +68,7 @@ Response
 
 .. code-block:: json
 
-    curl -X POST \
-        -d '{
+    {
       "type": "FeatureCollection",
       "features": [
         {
@@ -91,8 +90,7 @@ Response
           }
         }
       ]
-    }' \
-    http://[hostname]/idrop/v0/interpreted
+    }
 
 
 
@@ -103,7 +101,8 @@ Request
 
 .. code-block:: bash
 
-    {
+    curl -X POST \
+    -d '{
       "type": "Feature",
       "properties": {
         "inventoryId": 342,
@@ -136,7 +135,8 @@ Request
           ]
         ]
       }
-    }
+    }' \
+    http://[hostname]/idrop/v0/interpreted
 
 
 Response
