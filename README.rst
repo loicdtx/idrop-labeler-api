@@ -158,3 +158,29 @@ HTTP status codes
 ``400``: Bad request
 
 ``404``: Not found
+
+
+Install
+=======
+
+Locally
+-------
+
+You must first configure `idb <https://github.com/loicdtx/idrop-db>`_ (database setup and configuration file), then.
+
+.. code-block:: bash
+
+    git clone git@github.com:loicdtx/idrop-labeler-api.git
+    cd idrop-labeler-api
+    pip install -r requirements.txt
+
+
+Using docker
+------------
+
+.. code-block:: bash
+
+    git clone https://github.com/loicdtx/idrop-labeler-api.git
+    cd idrop-labeler-api.git
+    docker build -t idrop-api:latest .
+    docker run -d -p 5000:5000 -v ~/.idb:/root/.idb idrop-api
