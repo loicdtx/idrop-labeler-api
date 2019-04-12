@@ -39,18 +39,19 @@ def get_inventories():
         if content is None:
             # Use default parameters
             fc = idb.inventories(session=session)
-        # Convert camelCase dict keys to snake_case
-        params = {snakify(k):v for k,v in content.items()}
-        # TODO: Implement json validation
-        # try:
-            # validate(content, SEARCH_SCHEMA)
-        # except Exception as e:
-            # abort(400)
-        fc = idb.inventories(session=session, **params)
+        else:
+            # Convert camelCase dict keys to snake_case
+            params = {snakify(k):v for k,v in content.items()}
+            # TODO: Implement json validation
+            # try:
+                # validate(content, SEARCH_SCHEMA)
+            # except Exception as e:
+                # abort(400)
+            fc = idb.inventories(session=session, **params)
     return jsonify(fc)
 
 
-@app.route('/idrop/v0/interpreted', methods=['POST'])
+@app.route('/idrop/v0/interpreted', methods = ['POST'])
 def post_interpreted():
     content = request.get_json(silent=True)
     # TODO: implement proper json validation
@@ -63,15 +64,16 @@ def post_interpreted():
     return jsonify({'interpretedId': inserted_features[0]['id']}), 201
 
 
-@app.route('/idrop/v0/interpreted', method=['GET'])
+@app.route('/idrop/v0/interpreted', methods = ['GET'])
 def get_interpreted():
     content = request.get_json(silent=True)
     with session_scope() as session:
         if content is None:
             # Use default parameters
             fc = idb.interpreted(session=session)
-        params = {snakify(k):v for k,v in content.items()}
-        fc = idb.interpreted(session=session, **params)
+        else:
+            params = {snakify(k):v for k,v in content.items()}
+            fc = idb.interpreted(session=session, **params)
     return jsonify(fc)
 
 
