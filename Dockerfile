@@ -1,9 +1,10 @@
-FROM ubuntu:latest
+FROM python:3.7
 MAINTAINER loicdtx
-RUN apt-get update -y
-RUN apt-get install -y python3-pip git
+RUN apt-get update -y && \
+	apt-get install -y --no-install-recommends git 
 COPY . /app
 WORKDIR /app
-RUN pip3 install -r requirements.txt
-ENTRYPOINT ["python3"]
+RUN pip install -r requirements.txt
+EXPOSE 5000
+ENTRYPOINT ["python"]
 CMD ["app.py"]

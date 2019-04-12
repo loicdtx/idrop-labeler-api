@@ -183,4 +183,4 @@ Using docker
     git clone https://github.com/loicdtx/idrop-labeler-api.git
     cd idrop-labeler-api.git
     docker build -t idrop-api:latest .
-    docker run -d -p 5000:5000 -v ~/.idb:/root/.idb idrop-api
+    docker run --name idrop-api --rm -d -p 5000:5000 -v ~/.idb:/root/.idb idrop-api
