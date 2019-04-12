@@ -10,6 +10,54 @@ from idb.utils import snakify
 app = Flask(__name__)
 
 
+INVENTORY_QUERY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "nSamples": {"type": "integer"},
+        "studyAreaId": {
+            "oneOf": [
+                {"type": "integer"},
+                {"type": "null"}
+            ]
+        },
+        "speciesId": {
+            "oneOf": [
+                {"type": "integer"},
+                {"type": "null"}
+            ]
+        }
+    },
+    "required": ["nSamples"],
+    "additionalProperties": False
+}
+
+
+FEATURE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "type": {"type": "string"},
+        "properties": {
+            "type": "object",
+            "properties": {
+                "inventoryId": {"type": "integer"},
+                "speciesId": {"type": "integer"}
+            },
+            "required": ["inventoryId", "speciesId"],
+            "additionalProperties": False,
+        },
+        "geometry": {
+            "type": "object",
+            "properties": {
+                "type": {"type": "string", "enum": ["Polygon"]},
+                "coordinates": {"type": "array"}
+            },
+            "required": ["type", "coordinates"]
+        },
+    },
+    "required": ["properties", "geometry"]
+}
+
+
 @app.errorhandler(400)
 def not_found(error):
     return make_response(jsonify( { 'error': 'Bad request' } ), 400)
@@ -40,13 +88,12 @@ def get_inventories():
             # Use default parameters
             fc = idb.inventories(session=session)
         else:
+            try:
+                validate(content, INVENTORY_QUERY_SCHEMA)
+            except Exception as e:
+                abort(400)
             # Convert camelCase dict keys to snake_case
             params = {snakify(k):v for k,v in content.items()}
-            # TODO: Implement json validation
-            # try:
-                # validate(content, SEARCH_SCHEMA)
-            # except Exception as e:
-                # abort(400)
             fc = idb.inventories(session=session, **params)
     return jsonify(fc)
 
@@ -54,14 +101,20 @@ def get_inventories():
 @app.route('/idrop/v0/interpreted', methods = ['POST'])
 def post_interpreted():
     content = request.get_json(silent=True)
-    # TODO: implement proper json validation
+    # validate against polygon schema
     if content is None:
         abort(400)
-    feature = {snakify(k):v for k,v in content.items()}
+    try:
+        validate(content, FEATURE_SCHEMA)
+    except Exception as e:
+        abort(400)
+    feature = content
+    feature['properties'] = {snakify(k):v for k,v in
+                             feature['properties'].items()}
     with session_scope() as session:
         # add_interpreted returns a list, hence the s
         inserted_features = idb.add_interpreted(session=session, fc=feature)
-    return jsonify({'interpretedId': inserted_features[0]['id']}), 201
+    return jsonify({'interpretedId': inserted_features[0]['properties']['id']}), 201
 
 
 @app.route('/idrop/v0/interpreted', methods = ['GET'])
@@ -77,7 +130,5 @@ def get_interpreted():
     return jsonify(fc)
 
 
-
-
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0')

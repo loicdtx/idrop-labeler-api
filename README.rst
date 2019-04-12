@@ -62,6 +62,7 @@ Request
 .. code-block:: bash
 
     curl -X GET \
+        -H "Content-Type: application/json" \
         -d '{"nSamples": 1, "studyAreaId": null, "speciesId": 4}' \
         http://[hostname]/idrop/v0/inventories
 
@@ -104,6 +105,7 @@ Request
 .. code-block:: bash
 
     curl -X POST \
+    -H "Content-Type: application/json" \
     -d '{
       "type": "Feature",
       "properties": {
