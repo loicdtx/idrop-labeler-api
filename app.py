@@ -80,6 +80,15 @@ def get_studyareas():
         return jsonify({'species': idb.studyareas(session)})
 
 
+@app.route('/idrop/v0/studyareas/<int:id>', methods = ['GET'])
+def get_studyarea(id):
+    with session_scope() as session:
+        obj = idb.studyarea(session=session, id=id)
+        if obj is None:
+            abort(404)
+        return jsonify(camelify_feature(obj))
+
+
 @app.route('/idrop/v0/inventories', methods = ['GET'])
 def get_inventories():
     content = request.get_json(silent=True)
@@ -98,6 +107,15 @@ def get_inventories():
     # Camelify properties of feature collection
     fc['features'] = [camelify_feature(f) for f in fc['features']]
     return jsonify(fc)
+
+
+@app.route('/idrop/v0/inventories/<int:id>', methods = ['GET'])
+def get_inventory(id):
+    with session_scope() as session:
+        obj = idb.inventory(session=session, id=id)
+        if obj is None:
+            abort(404)
+        return jsonify(camelify_feature(obj))
 
 
 @app.route('/idrop/v0/interpreted', methods = ['POST'])
@@ -122,6 +140,15 @@ def post_interpreted():
     return jsonify({'interpretedId': inserted_features[0]['properties']['id']}), 201
 
 
+@app.route('/idrop/v0/interpreted/<int:id>', methods = ['GET'])
+def interpreted_by_id(id):
+    with session_scope() as session:
+        obj = idb.interpreted_by_id(session=session, id=id)
+        if obj is None:
+            abort(404)
+        return jsonify(camelify_feature(obj))
+
+
 @app.route('/idrop/v0/interpreted', methods = ['GET'])
 def get_interpreted():
     content = request.get_json(silent=True)
@@ -136,4 +163,4 @@ def get_interpreted():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
