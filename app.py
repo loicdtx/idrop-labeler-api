@@ -5,7 +5,7 @@ from jsonschema import validate
 
 import idb
 from idb.db import session_scope
-from idb.utils import snakify, camelify_feature
+from idb.utils import snakify, camelify, camelify_feature
 
 app = Flask(__name__)
 
@@ -55,6 +55,16 @@ FEATURE_SCHEMA = {
         },
     },
     "required": ["properties", "geometry"]
+}
+
+
+UPDATE_INVENTORY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "isInterpreted": {"type": "boolean"}
+    },
+    "required": ["isInterpreted"],
+    "additionalProperties": False
 }
 
 
@@ -160,6 +170,24 @@ def get_interpreted():
             params = {snakify(k):v for k,v in content.items()}
             fc = idb.interpreted(session=session, **params)
     return jsonify(fc)
+
+
+@app.route('/idrop/v0/inventories/<int:id>', methods = ['PUT'])
+def update_inventory(id):
+    content = request.get_json(silent=True)
+    if content is None:
+        abort(400)
+    try:
+        validate(content, UPDATE_INVENTORY_SCHEMA)
+    except Exception as e:
+        abort(400)
+    params = {snakify(k):v for k,v in content.items()}
+    params.update(id=id)
+    with session_scope() as session:
+        updated = idb.update_inventory(session=session, **params)
+    if updated == 0:
+        abort(400)
+    return jsonify({camelify(k):v for k,v in params.items()})
 
 
 if __name__ == '__main__':
