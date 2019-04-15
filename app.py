@@ -116,6 +116,9 @@ def post_interpreted():
     with session_scope() as session:
         # add_interpreted returns a list, hence the s
         inserted_features = idb.add_interpreted(session=session, fc=feature)
+        # Change the status of is_interpreted in Inventory table to True
+        update_inventory(session=session, id=feature['inventory_id'],
+                         is_interpreted=True)
     return jsonify({'interpretedId': inserted_features[0]['properties']['id']}), 201
 
 
