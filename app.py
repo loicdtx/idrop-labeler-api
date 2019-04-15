@@ -5,7 +5,7 @@ from jsonschema import validate
 
 import idb
 from idb.db import session_scope
-from idb.utils import snakify
+from idb.utils import snakify, camelify_feature
 
 app = Flask(__name__)
 
@@ -95,6 +95,8 @@ def get_inventories():
             # Convert camelCase dict keys to snake_case
             params = {snakify(k):v for k,v in content.items()}
             fc = idb.inventories(session=session, **params)
+    # Camelify properties of feature collection
+    fc['features'] = [camelify_feature(f) for f in fc['features']]
     return jsonify(fc)
 
 
