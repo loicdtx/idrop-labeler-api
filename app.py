@@ -107,6 +107,15 @@ def get_studyarea(id):
 
 @app.route('/idrop/v0/inventories', methods = ['GET'])
 def get_inventories():
+    with session_scope() as session:
+        fc = idb.inventories(session=session)
+    # Camelify properties of feature collection
+    fc['features'] = [camelify_feature(f) for f in fc['features']]
+    return jsonify(fc)
+
+
+@app.route('/idrop/v0/inventories', methods = ['POST'])
+def get_inventories_filter():
     content = request.get_json(silent=True)
     with session_scope() as session:
         if content is None:
@@ -167,6 +176,13 @@ def interpreted_by_id(id):
 
 @app.route('/idrop/v0/interpreted', methods = ['GET'])
 def get_interpreted():
+    with session_scope() as session:
+        fc = idb.interpreted(session=session)
+    return jsonify(fc)
+
+
+@app.route('/idrop/v0/interpreted/', methods = ['POST'])
+def get_interpreted_filter():
     content = request.get_json(silent=True)
     with session_scope() as session:
         if content is None:
