@@ -178,10 +178,11 @@ def interpreted_by_id(id):
 def get_interpreted():
     with session_scope() as session:
         fc = idb.interpreted(session=session)
+    fc['features'] = [camelify_feature(f) for f in fc['features']]
     return jsonify(fc)
 
 
-@app.route('/idrop/v0/interpreted/', methods = ['POST'])
+@app.route('/idrop/v0/interpreted', methods = ['POST'])
 def get_interpreted_filter():
     content = request.get_json(silent=True)
     with session_scope() as session:
@@ -191,6 +192,7 @@ def get_interpreted_filter():
         else:
             params = {snakify(k):v for k,v in content.items()}
             fc = idb.interpreted(session=session, **params)
+    fc['features'] = [camelify_feature(f) for f in fc['features']]
     return jsonify(fc)
 
 
