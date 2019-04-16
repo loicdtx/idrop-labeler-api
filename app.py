@@ -25,6 +25,12 @@ INVENTORY_QUERY_SCHEMA = {
                 {"type": "integer"},
                 {"type": "null"}
             ]
+        },
+        "isInterpreted": {
+            "oneOf": [
+                {"type": "boolean"},
+                {"type": "null"}
+            ]
         }
     },
     "required": ["nSamples"],
@@ -87,7 +93,7 @@ def get_species():
 @app.route('/idrop/v0/studyareas', methods = ['GET'])
 def get_studyareas():
     with session_scope() as session:
-        return jsonify({'species': idb.studyareas(session)})
+        return jsonify({'studyAreas': idb.studyareas(session)})
 
 
 @app.route('/idrop/v0/studyareas/<int:id>', methods = ['GET'])
@@ -145,7 +151,7 @@ def post_interpreted():
         # add_interpreted returns a list, hence the s
         inserted_features = idb.add_interpreted(session=session, fc=feature)
         # Change the status of is_interpreted in Inventory table to True
-        update_inventory(session=session, id=feature['inventory_id'],
+        idb.update_inventory(session=session, id=feature['properties']['inventory_id'],
                          is_interpreted=True)
     return jsonify({'interpretedId': inserted_features[0]['properties']['id']}), 201
 
@@ -173,7 +179,7 @@ def get_interpreted():
 
 
 @app.route('/idrop/v0/inventories/<int:id>', methods = ['PUT'])
-def update_inventory(id):
+def update_inventory_2(id):
     content = request.get_json(silent=True)
     if content is None:
         abort(400)
