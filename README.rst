@@ -8,108 +8,499 @@ iDrop labeler API
 Resources
 =========
 
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| HTTP method | URI                                         | Action                                                                |
-+=============+=============================================+=======================================================================+
-| GET         | http://[hostname]/idrop/v0/species          | Retrieve all available species                                        |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| GET         | http://[hostname]/idrop/v0/studyareas       | Retrieve all available study areas                                    |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| GET         | http://[hostname]/idrop/v0/studyareas/<id>  | Retrieve a single study area by id                                    |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| GET         | http://[hostname]/idrop/v0/inventories      | Sample inventory points using optional filters defined in a JSON body |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| GET         | http://[hostname]/idrop/v0/inventories/<id> | Retrieve a single inventory item by id                                |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| PUT         | http://[hostname]/idrop/v0/inventories/<id> | Update an inventory sample (isInterpreted field)                      |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| POST        | http://[hostname]/idrop/v0/interpreted      | Create a record in the interpreted table                              |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| GET         | http://[hostname]/idrop/v0/interpreted/<id> | Retrieve a single interpreted item by id                              |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| GET         | http://[hostname]/idrop/v0/interpreted      | Sample interpreted records using optional filters                     |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
-| GET         | http://[hostname]/idrop/v0/rawsql           | Send a raw query to the database                                      |
-+-------------+---------------------------------------------+-----------------------------------------------------------------------+
+List of resources
+-----------------
+
++-------------+------------------------------+---------------------------------------------------+
+| HTTP method | URI                          | Action                                            |
++=============+==============================+===================================================+
+| GET         | /idrop/v0/species            | Retrieve all available species                    |
++-------------+------------------------------+---------------------------------------------------+
+| GET         | /idrop/v0/studyareas         | Retrieve all available study areas                |
++-------------+------------------------------+---------------------------------------------------+
+| GET         | /idrop/v0/studyareas/<id>    | Retrieve a single study area by id                |
++-------------+------------------------------+---------------------------------------------------+
+| GET         | /idrop/v0/inventories        | Get all inventory samples                         |
++-------------+------------------------------+---------------------------------------------------+
+| POST        | /idrop/v0/inventories        | Get a subset of inventory samples using filters   |
++-------------+------------------------------+---------------------------------------------------+
+| GET         | /idrop/v0/inventories/<id>   | Retrieve a single inventory item by id            |
++-------------+------------------------------+---------------------------------------------------+
+| PUT         | /idrop/v0/inventories/<id>   | Update an inventory sample (isInterpreted field)  |
++-------------+------------------------------+---------------------------------------------------+
+| GET         | /idrop/v0/interpreted        | Get all interpreted records                       |
++-------------+------------------------------+---------------------------------------------------+
+| GET         | /idrop/v0/interpreted/<id>   | Retrieve a single interpreted item by id          |
++-------------+------------------------------+---------------------------------------------------+
+| POST        | /idrop/v0/interpreted        | Create a record in the interpreted table          |
++-------------+------------------------------+---------------------------------------------------+
+| POST        | /idrop/v0/interpreted/filter | Sample interpreted records using optional filters |
++-------------+------------------------------+---------------------------------------------------+
 
 
+Details
+-------
 
 
-Examples
-========
+GET ``idrop/v0/species``
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Retrieve list of species
-------------------------
+Get all species
 
-Request
+Example query
+"""""""""""""
+
 
 .. code-block:: bash
 
-    curl -X GET https://[hostname]/idrop/v0/species
-
-Response
+    curl 0.0.0.0:5000/idrop/v0/species
 
 .. code-block:: json
 
     {
-    "species": [
-        {"code": "SAP",
-         "name": "sapelli",
-         "id": 4},
-        {"code": "KOS",
-         "name": "kossipo",
-         "id": 9}
-    ]
-    }
-
-
-Get a random inventory point for a given species
-------------------------------------------------
-
-Request
-
-.. code-block:: bash
-
-    curl -X GET \
-        -H "Content-Type: application/json" \
-        -d '{"nSamples": 1, "studyAreaId": null, "speciesId": 4}' \
-        http://[hostname]/idrop/v0/inventories
-
-
-Response
-
-.. code-block:: json
-
-    {
-      "type": "FeatureCollection",
-      "features": [
+      "species": [
         {
-          "type": "Feature",
-          "properties": {
-            "speciesName": "sapelli",
-            "speciesCode": "SAP",
-            "speciesId": 4,
-            "quality": "B",
-            "dbh": 12,
-            "id": 342
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              16.17414,
-              1.43030
-            ]
-          }
+          "code": "SAP", 
+          "id": 1, 
+          "name": "sapelli"
+        }, 
+        {
+          "code": "KOS", 
+          "id": 2, 
+          "name": "kossipo"
         }
       ]
     }
 
 
 
-Create a record in the interpreted table
-----------------------------------------
+GET ``/idrop/v0/studyareas`` 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Request
+Get a feature collection containing all study areas
+
+Example query
+"""""""""""""
+
+
+.. code-block:: bash
+
+    curl 0.0.0.0:5000/idrop/v0/studyareas
+
+
+.. code-block:: json
+
+    {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              [
+                [
+                  15.426567415396372, 
+                  1.2072162975867589
+                ], 
+                [
+                  15.428939084211985, 
+                  1.207078809539477
+                ], 
+                [
+                  15.428994079430897, 
+                  1.2039922028779992
+                ], 
+                [
+                  15.42678052186966, 
+                  1.2040059516827275
+                ], 
+                [
+                  15.426567415396372, 
+                  1.2072162975867589
+                ]
+              ]
+            ], 
+            "type": "Polygon"
+          }, 
+          "properties": {
+            "id": 1, 
+            "name": "test_zone"
+          }, 
+          "type": "Feature"
+        }
+      ], 
+      "type": "FeatureCollection"
+    }
+
+
+GET ``/idrop/v0/studyareas/<id>``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get a single study area
+
+
+Example query
+"""""""""""""
+
+.. code-block:: bash
+
+    curl 0.0.0.0:5000/idrop/v0/studyareas/1
+
+
+.. code-block:: json
+
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              15.426567415396372, 
+              1.2072162975867589
+            ], 
+            [
+              15.428939084211985, 
+              1.207078809539477
+            ], 
+            [
+              15.428994079430897, 
+              1.2039922028779992
+            ], 
+            [
+              15.42678052186966, 
+              1.2040059516827275
+            ], 
+            [
+              15.426567415396372, 
+              1.2072162975867589
+            ]
+          ]
+        ], 
+        "type": "Polygon"
+      }, 
+      "properties": {
+        "id": 1, 
+        "name": "test_zone"
+      }, 
+      "type": "Feature"
+    }
+
+
+GET ``/idrop/v0/inventories``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get a feature collection containing all inventory samples
+
+
+Example query
+"""""""""""""
+
+.. code-block:: bash
+
+    curl 0.0.0.0:5000/idrop/v0/inventories
+
+
+.. code-block:: json
+
+    {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              15.42773675239257, 
+              1.2063405717582367
+            ], 
+            "type": "Point"
+          }, 
+          "properties": {
+            "dbh": 12, 
+            "id": 1, 
+            "isInterpreted": false, 
+            "quality": "B", 
+            "speciesCode": "SAP", 
+            "speciesId": 1, 
+            "speciesName": "sapelli"
+          }, 
+          "type": "Feature"
+        }, 
+        {
+          "geometry": {
+            "coordinates": [
+              15.429433048078712, 
+              1.2056055102942422
+            ], 
+            "type": "Point"
+          }, 
+          "properties": {
+            "dbh": 9, 
+            "id": 4, 
+            "isInterpreted": false, 
+            "quality": "A", 
+            "speciesCode": "KOS", 
+            "speciesId": 2, 
+            "speciesName": "kossipo"
+          }, 
+          "type": "Feature"
+        }
+      ], 
+      "type": "FeatureCollection"
+    }
+
+
+POST ``/idrop/v0/inventories``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Query a subset of the inventory samples by applying optional filters. Return a feature collection
+
+Parameters
+""""""""""
+
+- ``nSamples`` (int or null): maximum number of samples returned
+- ``isInterpreted`` (boolean or null): Restrict results to only samples that have (or not) already been interpreted (or skipped)
+- ``speciesId`` (int or null): Restrict results to a single species
+- ``studyAreaId`` (int or null): Restrict results to a single study area 
+  
+
+Example query
+"""""""""""""
+
+.. code-block:: bash
+
+    curl -X POST \
+        -H "Content-Type: application/json" \
+        -d '{"nSamples": 10, "isInterpreted": false, "speciesId": 1, "studyAreaId": 1}' \
+        http://0.0.0.0:5000/idrop/v0/inventories
+
+.. code-block:: json
+
+    {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              15.42773675239257, 
+              1.2063405717582367
+            ], 
+            "type": "Point"
+          }, 
+          "properties": {
+            "dbh": 12, 
+            "id": 1, 
+            "isInterpreted": false, 
+            "quality": "B", 
+            "speciesCode": "SAP", 
+            "speciesId": 1, 
+            "speciesName": "sapelli"
+          }, 
+          "type": "Feature"
+        }
+      ], 
+      "type": "FeatureCollection"
+    }
+
+
+GET ``/idrop/v0/inventories/<id>``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get a single inventory record
+
+
+Example query
+"""""""""""""
+
+
+.. code-block:: bash
+
+    curl http://0.0.0.0:5000/idrop/v0/inventories/3
+
+
+.. code-block:: json
+
+    {
+      "geometry": {
+        "coordinates": [
+          15.42757044889393, 
+          1.2047939492208728
+        ], 
+        "type": "Point"
+      }, 
+      "properties": {
+        "dbh": 13, 
+        "id": 3, 
+        "isInterpreted": true, 
+        "quality": "A", 
+        "speciesCode": "KOS", 
+        "speciesId": 2, 
+        "speciesName": "kossipo"
+      }, 
+      "type": "Feature"
+    }
+
+
+
+PUT ``/idrop/v0/inventories/<id>``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Update the ``isInterpreted`` field of a single inventory record. 
+
+Parameters
+""""""""""
+
+- ``isInterpreted`` (boolean): Value to assign to the ``isInterpreted`` key of the record ``id``
+
+
+Example query
+"""""""""""""
+
+
+.. code-block:: bash
+
+    curl -X PUT \
+            -H "Content-Type: application/json" \
+            -d '{"isInterpreted": false}' \
+            http://0.0.0.0:5000/idrop/v0/inventories/2
+
+
+.. code-block:: json
+
+    {
+      "id": 2, 
+      "isInterpreted": false
+    }
+
+
+GET ``/idrop/v0/interpreted``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get all interpreted samples as a feature collection
+
+
+Example query
+"""""""""""""
+
+.. code-block:: bash
+
+    curl http://0.0.0.0:5000/idrop/v0/interpreted
+
+
+.. code-block:: json
+
+    {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              [
+                [
+                  15.427424, 
+                  1.20515
+                ], 
+                [
+                  15.427424, 
+                  1.20515
+                ], 
+                [
+                  15.427669, 
+                  1.205149
+                ], 
+                [
+                  15.427669, 
+                  1.204943
+                ], 
+                [
+                  15.427418, 
+                  1.204948
+                ], 
+                [
+                  15.427424, 
+                  1.20515
+                ]
+              ]
+            ], 
+            "type": "Polygon"
+          }, 
+          "properties": {
+            "id": 1, 
+            "inventoryId": 3, 
+            "speciesId": 2, 
+            "speciesName": "kossipo"
+          }, 
+          "type": "Feature"
+        }
+      ], 
+      "type": "FeatureCollection"
+    }
+
+
+
+GET ``/idrop/v0/interpreted/<id>``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get a single interpreted samples
+
+
+Example query
+"""""""""""""
+
+.. code-block:: bash
+
+    curl http://0.0.0.0:5000/idrop/v0/interpreted/1
+
+
+.. code-block:: json
+
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              15.427424, 
+              1.20515
+            ], 
+            [
+              15.427424, 
+              1.20515
+            ], 
+            [
+              15.427669, 
+              1.205149
+            ], 
+            [
+              15.427669, 
+              1.204943
+            ], 
+            [
+              15.427418, 
+              1.204948
+            ], 
+            [
+              15.427424, 
+              1.20515
+            ]
+          ]
+        ], 
+        "type": "Polygon"
+      }, 
+      "properties": {
+        "id": 1, 
+        "inventoryId": 3, 
+        "speciesId": 2, 
+        "speciesName": "kossipo"
+      }, 
+      "type": "Feature"
+    }
+
+
+POST ``/idrop/v0/interpreted``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Create a new interpreted sample. Calling this resource also has the side effect of changing the ``isInterpreted`` field of the associated inventory sample to ``true``.
+
+Parameters
+""""""""""
+
+- A geojson feature of type ``Polygon`` with the properties ``inventoryId`` and ``speciesId``.
+  
+
+Example query
+"""""""""""""
 
 .. code-block:: bash
 
@@ -118,8 +509,8 @@ Request
     -d '{
       "type": "Feature",
       "properties": {
-        "inventoryId": 342,
-        "speciesId": 4
+        "inventoryId": 2,
+        "speciesId": 1
       },
       "geometry": {
         "type": "Polygon",
@@ -149,14 +540,90 @@ Request
         ]
       }
     }' \
-    http://[hostname]/idrop/v0/interpreted
+    http://0.0.0.0:5000/idrop/v0/interpreted
 
-
-Response
 
 .. code-block:: json
 
-    {"interpretedId": 1}
+    {
+      "interpretedId": 3
+    }
+
+
+
+POST ``/idrop/v0/interpreted/filter``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Query a subset of the interpreted samples. Return a feature collection
+
+
+Parameters
+""""""""""
+
+- ``nSamples`` (int or null): Maximum number of features in the returned feature collection
+
+
+Examples
+""""""""
+
+
+.. code-block:: bash
+
+    curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"nSamples": 10}' \
+            http://0.0.0.0:5000/idrop/v0/interpreted/filter
+
+
+.. code-block:: json
+
+    {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              [
+                [
+                  15.427424, 
+                  1.20515
+                ], 
+                [
+                  15.427424, 
+                  1.20515
+                ], 
+                [
+                  15.427669, 
+                  1.205149
+                ], 
+                [
+                  15.427669, 
+                  1.204943
+                ], 
+                [
+                  15.427418, 
+                  1.204948
+                ], 
+                [
+                  15.427424, 
+                  1.20515
+                ]
+              ]
+            ], 
+            "type": "Polygon"
+          }, 
+          "properties": {
+            "id": 1, 
+            "inventoryId": 3, 
+            "speciesId": 2, 
+            "speciesName": "kossipo"
+          }, 
+          "type": "Feature"
+        }
+      ], 
+      "type": "FeatureCollection"
+    }
+
+
 
 
 HTTP status codes
