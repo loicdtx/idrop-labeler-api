@@ -77,6 +77,7 @@ Example query
     }
 
 
+-----
 
 GET ``/idrop/v0/studyareas`` 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -134,6 +135,7 @@ Example query
       "type": "FeatureCollection"
     }
 
+-----
 
 GET ``/idrop/v0/studyareas/<id>``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -186,6 +188,7 @@ Example query
       "type": "Feature"
     }
 
+-----
 
 GET ``/idrop/v0/inventories``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -247,6 +250,7 @@ Example query
       "type": "FeatureCollection"
     }
 
+-----
 
 POST ``/idrop/v0/inventories``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -299,6 +303,7 @@ Example query
       "type": "FeatureCollection"
     }
 
+-----
 
 GET ``/idrop/v0/inventories/<id>``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -338,6 +343,7 @@ Example query
     }
 
 
+-----
 
 PUT ``/idrop/v0/inventories/<id>``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -369,6 +375,7 @@ Example query
       "isInterpreted": false
     }
 
+-----
 
 GET ``/idrop/v0/interpreted``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -433,6 +440,7 @@ Example query
     }
 
 
+-----
 
 GET ``/idrop/v0/interpreted/<id>``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -491,6 +499,7 @@ Example query
       "type": "Feature"
     }
 
+-----
 
 POST ``/idrop/v0/interpreted``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -554,6 +563,7 @@ Example query
     }
 
 
+-----
 
 POST ``/idrop/v0/interpreted/filter``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -628,6 +638,7 @@ Examples
     }
 
 
+-----
 
 
 HTTP status codes
