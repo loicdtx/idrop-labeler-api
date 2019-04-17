@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import csv
+
 import fiona
 
 from idb.db import session_scope, init_db

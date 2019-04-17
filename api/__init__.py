@@ -13,7 +13,12 @@ app = Flask(__name__)
 INVENTORY_QUERY_SCHEMA = {
     "type": "object",
     "properties": {
-        "nSamples": {"type": "integer"},
+        "nSamples": {
+            "oneOf": [
+                {"type": "integer"},
+                {"type": "null"}
+            ]
+        },
         "studyAreaId": {
             "oneOf": [
                 {"type": "integer"},
@@ -33,7 +38,6 @@ INVENTORY_QUERY_SCHEMA = {
             ]
         }
     },
-    "required": ["nSamples"],
     "additionalProperties": False
 }
 
@@ -93,7 +97,7 @@ def get_species():
 @app.route('/idrop/v0/studyareas', methods = ['GET'])
 def get_studyareas():
     with session_scope() as session:
-        return jsonify({'studyAreas': idb.studyareas(session)})
+        return jsonify(idb.studyareas(session))
 
 
 @app.route('/idrop/v0/studyareas/<int:id>', methods = ['GET'])
@@ -182,7 +186,7 @@ def get_interpreted():
     return jsonify(fc)
 
 
-@app.route('/idrop/v0/interpreted', methods = ['POST'])
+@app.route('/idrop/v0/interpreted/filter', methods = ['POST'])
 def get_interpreted_filter():
     content = request.get_json(silent=True)
     with session_scope() as session:
