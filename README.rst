@@ -5,6 +5,10 @@ iDrop labeler API
 *Interface between iDrop labeler client and iDrop db*
 
 
+.. image:: https://travis-ci.org/loicdtx/idrop-labeler-api.svg?branch=master
+    :target: https://travis-ci.org/loicdtx/idrop-labeler-api
+
+
 Resources
 =========
 
