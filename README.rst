@@ -174,16 +174,21 @@ HTTP status codes
 Install
 =======
 
+You must first configure `idb <https://github.com/loicdtx/idrop-db>`_ (database setup and configuration file), then.
+
+
 Locally
 -------
 
-You must first configure `idb <https://github.com/loicdtx/idrop-db>`_ (database setup and configuration file), then.
 
 .. code-block:: bash
 
     git clone git@github.com:loicdtx/idrop-labeler-api.git
     cd idrop-labeler-api
     pip install -r requirements.txt
+    pip install -e .
+    export FLASK_APP=api
+    flask run
 
 
 Using docker
