@@ -126,9 +126,9 @@ def test_get_single_interpreted():
     assert [x in interp for x in ['geometry', 'properties', 'type']]
 
 
-def test_update_interpreted():
+def test_update_inventory():
     # Simulate a skip
-    status, inv = idrop_api(client, 'inventories/2', verb='put',
+    status, inv = idrop_api(client, 'inventories/2', verb='patch',
                             body={'isInterpreted': True})
     assert status == 200
     assert inv == {'id': 2, 'isInterpreted': True}

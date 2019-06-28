@@ -30,7 +30,7 @@ List of resources
 +-------------+------------------------------+---------------------------------------------------+
 | GET         | /idrop/v0/inventories/<id>   | Retrieve a single inventory item by id            |
 +-------------+------------------------------+---------------------------------------------------+
-| PUT         | /idrop/v0/inventories/<id>   | Update an inventory sample (isInterpreted field)  |
+| PATCH       | /idrop/v0/inventories/<id>   | Update an inventory sample (isInterpreted field)  |
 +-------------+------------------------------+---------------------------------------------------+
 | GET         | /idrop/v0/interpreted        | Get all interpreted records                       |
 +-------------+------------------------------+---------------------------------------------------+
@@ -345,7 +345,7 @@ Example query
 
 -----
 
-PUT ``/idrop/v0/inventories/<id>``
+PATCH ``/idrop/v0/inventories/<id>``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Update the ``isInterpreted`` field of a single inventory record. 
@@ -362,7 +362,7 @@ Example query
 
 .. code-block:: bash
 
-    curl -X PUT \
+    curl -X PATCH \
             -H "Content-Type: application/json" \
             -d '{"isInterpreted": false}' \
             http://0.0.0.0:5000/idrop/v0/inventories/2

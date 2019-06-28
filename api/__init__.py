@@ -200,7 +200,7 @@ def get_interpreted_filter():
     return jsonify(fc)
 
 
-@app.route('/idrop/v0/inventories/<int:id>', methods = ['PUT'])
+@app.route('/idrop/v0/inventories/<int:id>', methods = ['PATCH'])
 def update_inventory_2(id):
     content = request.get_json(silent=True)
     if content is None:
