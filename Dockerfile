@@ -16,4 +16,4 @@ RUN pip3 install -e .
 RUN pip3 install uwsgi
 EXPOSE 5000
 ENTRYPOINT ["uwsgi"]
-CMD ["--socket", "0.0.0.0:5000", "--protocol=http", "-w", "api:app"]
+CMD ["--socket", "0.0.0.0:5000", "--master", "--protocol=http", "-w", "api:app"]
