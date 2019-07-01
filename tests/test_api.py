@@ -26,7 +26,7 @@ INTERPRETED_FEATURE_2 = {'geometry': {
                          (15.427418, 1.204948),
                          (15.427424, 1.205150)]],
         'type': 'Polygon'},
-    'properties': {'inventoryId': 3, 'speciesId': 3},
+    'properties': {'inventoryId': 3, 'speciesId': 1},
     'type': 'Feature'}
 
 
@@ -135,6 +135,7 @@ def test_get_single_interpreted():
     assert status == 200
     assert isinstance(interp, dict)
     assert [x in interp for x in ['geometry', 'properties', 'type']]
+    assert interp['properties']['speciesId'] == 2
 
 
 def test_update_interpreted():
@@ -144,7 +145,7 @@ def test_update_interpreted():
     assert interp == ''
     # Check successful update
     status, interp_2 = idrop_api(client, 'interpreted/1')
-    assert interp_2['properties']['speciesId'] == 3
+    assert interp_2['properties']['speciesId'] == 1
 
 
 def test_update_inventory():
