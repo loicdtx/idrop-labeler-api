@@ -18,6 +18,17 @@ INTERPRETED_FEATURE = {'geometry': {
     'properties': {'inventoryId': 3, 'speciesId': 2},
     'type': 'Feature'}
 
+INTERPRETED_FEATURE_2 = {'geometry': {
+        'coordinates': [[(15.427424, 1.205150),
+                         (15.427424, 1.205150),
+                         (15.427669, 1.205149),
+                         (15.427669, 1.204943),
+                         (15.427418, 1.204948),
+                         (15.427424, 1.205150)]],
+        'type': 'Polygon'},
+    'properties': {'inventoryId': 3, 'speciesId': 3},
+    'type': 'Feature'}
+
 
 def idrop_api(client, endpoint, verb='get', body=None):
     """Wrapper to facilitate interaction with the API"""
@@ -124,6 +135,16 @@ def test_get_single_interpreted():
     assert status == 200
     assert isinstance(interp, dict)
     assert [x in interp for x in ['geometry', 'properties', 'type']]
+
+
+def test_update_interpreted():
+    status, interp = idrop_api(client, 'interpreted/1', verb='put'
+                            body=INTERPRETED_FEATURE_2)
+    assert status == 204
+    assert interp == ''
+    # Check successful update
+    status, interp_2 = idrop_api(client, 'interpreted/1')
+    assert interp_2['properties']['speciesId'] == 3
 
 
 def test_update_inventory():

@@ -169,6 +169,25 @@ def post_interpreted():
     return jsonify({'interpretedId': inserted_features[0]['properties']['id']}), 201
 
 
+@app.route('/idrop/v0/interpreted/<int:id>', methods = ['PUT'])
+def update_interpreted(id):
+    content = request.get_json(silent=True)
+    # validate against polygon schema
+    if content is None:
+        abort(400)
+    try:
+        validate(content, FEATURE_SCHEMA)
+    except Exception as e:
+        abort(400)
+    feature = content
+    feature['properties'] = {snakify(k):v for k,v in
+                             feature['properties'].items()}
+    with session_scope() as session:
+        new_feature = idb.replace_interpreted(session=session, id=id,
+                                              feature=feature)
+    return ('', 204)
+
+
 @app.route('/idrop/v0/interpreted/<int:id>', methods = ['GET'])
 def interpreted_by_id(id):
     with session_scope() as session:

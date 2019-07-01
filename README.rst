@@ -36,6 +36,8 @@ List of resources
 +-------------+------------------------------+---------------------------------------------------+
 | GET         | /idrop/v0/interpreted/<id>   | Retrieve a single interpreted item by id          |
 +-------------+------------------------------+---------------------------------------------------+
+| PUT         | /idrop/v0/interpreted/<id>   | Update/replace an existing interpreted record     |
++-------------+------------------------------+---------------------------------------------------+
 | POST        | /idrop/v0/interpreted        | Create a record in the interpreted table          |
 +-------------+------------------------------+---------------------------------------------------+
 | POST        | /idrop/v0/interpreted/filter | Sample interpreted records using optional filters |
@@ -561,6 +563,69 @@ Example query
     {
       "interpretedId": 3
     }
+
+
+-----
+
+PUT ``/idrop/v0/interpreted/<id>``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Update/replace an already existing interpreted samples
+
+
+Parameters
+""""""""""
+
+- A geojson feature of type ``Polygon`` with the properties ``inventoryId`` and ``speciesId``.
+
+
+Example query
+"""""""""""""
+
+.. code-block:: bash
+
+    curl -X PUT \
+    -H "Content-Type: application/json" \
+    -d '{
+      "type": "Feature",
+      "properties": {
+        "inventoryId": 2,
+        "speciesId": 3
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              16.1716309,
+              1.43037
+            ],
+            [
+              16.1718508,
+              1.43037
+            ],
+            [
+              16.1718508,
+              1.4305845
+            ],
+            [
+              16.1716309,
+              1.4305845
+            ],
+            [
+              16.1716309,
+              1.43037
+            ]
+          ]
+        ]
+      }
+    }' \
+    http://0.0.0.0:5000/idrop/v0/interpreted
+
+
+.. code-block:: json
+
+    204 No Content
 
 
 -----
