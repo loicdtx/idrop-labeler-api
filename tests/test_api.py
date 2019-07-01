@@ -142,7 +142,7 @@ def test_update_interpreted():
     status, interp = idrop_api(client, 'interpreted/1', verb='put',
                                body=INTERPRETED_FEATURE_2)
     assert status == 204
-    assert interp == ''
+    assert interp == None
     # Check successful update
     status, interp_2 = idrop_api(client, 'interpreted/1')
     assert interp_2['properties']['speciesId'] == 1
