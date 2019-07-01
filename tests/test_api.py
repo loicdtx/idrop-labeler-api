@@ -138,8 +138,8 @@ def test_get_single_interpreted():
 
 
 def test_update_interpreted():
-    status, interp = idrop_api(client, 'interpreted/1', verb='put'
-                            body=INTERPRETED_FEATURE_2)
+    status, interp = idrop_api(client, 'interpreted/1', verb='put',
+                               body=INTERPRETED_FEATURE_2)
     assert status == 204
     assert interp == ''
     # Check successful update
