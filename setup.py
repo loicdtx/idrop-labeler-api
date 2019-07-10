@@ -8,6 +8,7 @@ setup(
     license='GPLv3',
     install_requires=[
         'flask',
+        'flask-cors',
     ],
     tests_require=[
         'pytest',
