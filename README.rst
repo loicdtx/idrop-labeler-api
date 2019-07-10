@@ -640,6 +640,8 @@ Parameters
 """"""""""
 
 - ``nSamples`` (int or null): Maximum number of features in the returned feature collection
+- ``speciesId`` (int or null): Restrict to a single species
+- ``inventoryId`` (int or null): Restrict search results to a single inventoryId (resulting feature collection should have a max length of 1)
 
 
 Examples
