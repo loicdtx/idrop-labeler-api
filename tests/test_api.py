@@ -134,7 +134,7 @@ def test_get_interpreted_filter_2():
     # New feature idb 0.0.3, only tests that passing the filters does not fail,
     # but test db does not contain enough samples for real tests
     status, interp = idrop_api(client, 'interpreted/filter', verb='post',
-                               body={'speciesId': 2, 'inventoryId': 4})
+                               body={'speciesId': 2, 'inventoryId': 3})
     assert status == 200
     assert isinstance(interp, dict)
     assert interp['type'] == 'FeatureCollection'
