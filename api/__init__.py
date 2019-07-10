@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask, jsonify, abort, request, make_response, url_for
+from flask_cors import CORS
 from jsonschema import validate
 
 import idb
@@ -8,6 +9,7 @@ from idb.db import session_scope
 from idb.utils import snakify, camelify, camelify_feature
 
 app = Flask(__name__)
+CORS(app)
 
 
 INVENTORY_QUERY_SCHEMA = {
