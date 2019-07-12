@@ -749,3 +749,9 @@ Using docker
     cd idrop-labeler-api.git
     docker build -t idrop-api:latest .
     docker run --name idrop-api --rm -d -p 5000:5000 -v ~/.idb:/root/.idb idrop-api
+    # Create the database tables
+    docker exec idrop-api python3 -c "from idb.db import init_db; init_db()"
+
+    # Or if the container is part of a docker-compose you can run
+    docker-compose run --rm --entrypoint "python3" idrop-api -c "from idb.db import init_db; init_db()"
+
