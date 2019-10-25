@@ -80,6 +80,7 @@ UPDATE_INVENTORY_SCHEMA = {
 }
 
 
+
 @app.errorhandler(400)
 def not_found(error):
     return make_response(jsonify( { 'error': 'Bad request' } ), 400)
@@ -237,6 +238,17 @@ def update_inventory_2(id):
     if updated == 0:
         abort(400)
     return jsonify({camelify(k):v for k,v in params.items()})
+
+
+@app.route('/idrop/v0/neighbours', methods = ['POST'])
+def get_neighbours():
+    content = request.get_json(silent=True)
+    params = {snakify(k):v for k,v in content.items()}
+    print(params)
+    with session_scope() as session:
+        fc = idb.neighborhood(session, **params)
+    fc['features'] = [camelify_feature(f) for f in fc['features']]
+    return jsonify(fc)
 
 
 if __name__ == '__main__':
