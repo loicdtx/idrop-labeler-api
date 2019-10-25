@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='idrop-api',
-    version='0.2',
+    version='0.3',
     packages=['api'],
     include_package_data=True,
     license='GPLv3',

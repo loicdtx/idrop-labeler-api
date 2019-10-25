@@ -42,6 +42,8 @@ List of resources
 +-------------+------------------------------+---------------------------------------------------+
 | POST        | /idrop/v0/interpreted/filter | Sample interpreted records using optional filters |
 +-------------+------------------------------+---------------------------------------------------+
+| POST        | /idrop/v0/neighbours         | Seach inventory records in the neighbourhood      |
++-------------+------------------------------+---------------------------------------------------+
 
 
 Details
@@ -626,6 +628,77 @@ Example query
 .. code-block:: json
 
     204 No Content
+
+
+-----
+
+POST ``/idrop/v0/neighbours
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Search inventory samples that are in the neighbourhood of another provided sample. The provided sample is automatically excluded from the featureCollection returned.
+
+
+Parameters
+""""""""""
+
+- ``inventoryId`` (int): The id of the inventory sample around which the spatial search is performed
+- ``distance`` (float): Search radius in meters
+- ``speciesId`` (int, list of int or null): Optional list of speciesId to restrict restrict the search
+
+
+Examples
+""""""""
+
+
+.. code-block:: bash
+
+    curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"inventoryId": 12, "distance": 200, "speciesId": [22, 3]}' \  # 22 and 3 corresponds to ids of SAP and AZO in species table
+            http://0.0.0.0:5000/idrop/v0/neighbours
+
+
+.. code-block:: json
+
+        {'features': [{'geometry': {'coordinates': [15.4234, 1.1752], 'type': 'Point'},
+                       'properties': {'dbh': 12,
+                                      'id': 14,
+                                      'isInterpreted': False,
+                                      'quality': 'D',
+                                      'speciesCode': 'SAP',
+                                      'speciesId': 22,
+                                      'speciesName': 'sapelli'},
+                       'type': 'Feature'},
+                      {'geometry': {'coordinates': [16.39673, 1.2927], 'type': 'Point'},
+                       'properties': {'dbh': 10,
+                                      'id': 15,
+                                      'isInterpreted': False,
+                                      'quality': 'B',
+                                      'speciesCode': 'SAP',
+                                      'speciesId': 22,
+                                      'speciesName': 'sapelli'},
+                       'type': 'Feature'},
+                      {'geometry': {'coordinates': [16.23559, 1.29474],
+                                    'type': 'Point'},
+                       'properties': {'dbh': 8,
+                                      'id': 25189,
+                                      'isInterpreted': False,
+                                      'quality': 'C',
+                                      'speciesCode': 'AZO',
+                                      'speciesId': 3,
+                                      'speciesName': 'azobe'},
+                       'type': 'Feature'},
+                      {'geometry': {'coordinates': [16.19604, 1.20542],
+                                    'type': 'Point'},
+                       'properties': {'dbh': 15,
+                                      'id': 25408,
+                                      'isInterpreted': False,
+                                      'quality': 'B',
+                                      'speciesCode': 'AZO',
+                                      'speciesId': 3,
+                                      'speciesName': 'azobe'},
+                       'type': 'Feature'}],
+         'type': 'FeatureCollection'}
 
 
 -----
