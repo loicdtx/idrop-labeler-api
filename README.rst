@@ -632,8 +632,8 @@ Example query
 
 -----
 
-POST ``/idrop/v0/neighbours
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+POST ``/idrop/v0/neighbours``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Search inventory samples that are in the neighbourhood of another provided sample. The provided sample is automatically excluded from the featureCollection returned.
 
