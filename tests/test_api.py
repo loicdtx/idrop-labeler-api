@@ -83,6 +83,15 @@ def test_get_inventories_filter_0():
     assert len(inv['features']) == 2
 
 
+def test_get_inventories_filter_0_hits():
+    # Inventories with json body
+    status, c = idrop_api(client, 'inventories/hits', verb='post',
+                            body={'nSamples': 2,
+                                  'studyAreaId': 1,
+                                  'speciesId': None})
+    assert status == 200
+    assert c == 2
+
 def test_get_inventories_filter_1():
     # Inventories with json body
     status, inv = idrop_api(client, 'inventories', verb='post',
