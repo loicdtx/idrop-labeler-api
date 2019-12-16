@@ -28,6 +28,8 @@ List of resources
 +-------------+------------------------------+---------------------------------------------------+
 | POST        | /idrop/v0/inventories        | Get a subset of inventory samples using filters   |
 +-------------+------------------------------+---------------------------------------------------+
+| POST        | /idrop/v0/inventories/hits   | Get the number of features of POST inventories    |
++-------------+------------------------------+---------------------------------------------------+
 | GET         | /idrop/v0/inventories/<id>   | Retrieve a single inventory item by id            |
 +-------------+------------------------------+---------------------------------------------------+
 | PATCH       | /idrop/v0/inventories/<id>   | Update an inventory sample (isInterpreted field)  |
@@ -306,6 +308,36 @@ Example query
       ], 
       "type": "FeatureCollection"
     }
+
+-----
+
+POST ``/idrop/v0/inventories/hits``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get the number of hits (length of feature collection) of a given by a ``POST`` query to ``inventories``. Has exactly the same parameters as ``POST ``/idrop/v0/inventories``
+
+Parameters
+""""""""""
+
+- ``nSamples`` (int or null): maximum number of samples returned
+- ``isInterpreted`` (boolean or null): Restrict results to only samples that have (or not) already been interpreted (or skipped)
+- ``speciesId`` (int or null): Restrict results to a single species
+- ``studyAreaId`` (int or null): Restrict results to a single study area 
+  
+
+Example query
+"""""""""""""
+
+.. code-block:: bash
+
+    curl -X POST \
+        -H "Content-Type: application/json" \
+        -d '{"nSamples": null, "isInterpreted": false, "speciesId": 1, "studyAreaId": 1}' \
+        http://0.0.0.0:5000/idrop/v0/inventories/hits
+
+.. code-block:: json
+
+    342
 
 -----
 
