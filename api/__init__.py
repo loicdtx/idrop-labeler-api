@@ -141,6 +141,22 @@ def get_inventories_filter():
     return jsonify(fc)
 
 
+@app.route('/idrop/v0/inventories/hits', methods = ['POST'])
+def count_inventory_hits():
+    content = request.get_json(silent=True)
+    with session_scope() as session:
+        if content is None:
+            params = {} # Empty dict to be passed as kwargs later
+        else:
+            try:
+                validate(content, INVENTORY_QUERY_SCHEMA)
+            except Exception as e:
+                abort(400)
+            params = {snakify(k):v for k,v in content.items()}
+        c = idb.inventories_hits(session=session, **params)
+        return jsonify(c)
+
+
 @app.route('/idrop/v0/inventories/<int:id>', methods = ['GET'])
 def get_inventory(id):
     with session_scope() as session:
