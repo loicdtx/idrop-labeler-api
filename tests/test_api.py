@@ -177,6 +177,16 @@ def test_update_inventory():
     assert idrop_api(client, 'inventories/2')[1]['properties']['isInterpreted'] is True
 
 
+def test_update_inventory_2():
+    # Add a comment
+    status, inv = idrop_api(client, 'inventories/2', verb='patch',
+                            body={'comment': 'Hello world!'})
+    assert status == 200
+    assert inv == {'id': 2, 'comment': 'Hello world!'}
+    assert idrop_api(client, 'inventories/2')[1]['properties']['isInterpreted'] is True
+    assert idrop_api(client, 'inventories/2')[1]['properties']['comment'] is 'Hello world!'
+
+
 def test_get_inventories_filter_2():
     # New test now that some records have been interpreted
     status, inv = idrop_api(client, 'inventories', verb='post',

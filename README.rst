@@ -229,7 +229,8 @@ Example query
             "quality": "B", 
             "speciesCode": "SAP", 
             "speciesId": 1, 
-            "speciesName": "sapelli"
+            "speciesName": "sapelli",
+            "comment": null
           }, 
           "type": "Feature"
         }, 
@@ -248,7 +249,9 @@ Example query
             "quality": "A", 
             "speciesCode": "KOS", 
             "speciesId": 2, 
-            "speciesName": "kossipo"
+            "speciesName": "kossipo",
+            "comment": null
+
           }, 
           "type": "Feature"
         }
@@ -301,7 +304,9 @@ Example query
             "quality": "B", 
             "speciesCode": "SAP", 
             "speciesId": 1, 
-            "speciesName": "sapelli"
+            "speciesName": "sapelli",
+            "comment": null
+
           }, 
           "type": "Feature"
         }
@@ -373,7 +378,9 @@ Example query
         "quality": "A", 
         "speciesCode": "KOS", 
         "speciesId": 2, 
-        "speciesName": "kossipo"
+        "speciesName": "kossipo",
+        "comment": null
+
       }, 
       "type": "Feature"
     }
@@ -384,12 +391,13 @@ Example query
 PATCH ``/idrop/v0/inventories/<id>``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Update the ``isInterpreted`` field of a single inventory record. 
+Update the ``isInterpreted`` and/or the ``comment`` fields of a single inventory record. 
 
 Parameters
 """"""""""
 
 - ``isInterpreted`` (boolean): Value to assign to the ``isInterpreted`` key of the record ``id``
+- ``comment`` (str): A string to add to the comment field of the inventory table
 
 
 Example query
@@ -400,7 +408,8 @@ Example query
 
     curl -X PATCH \
             -H "Content-Type: application/json" \
-            -d '{"isInterpreted": false}' \
+            -d '{"isInterpreted": false,
+                 "comment": "Hello world!"}' \
             http://0.0.0.0:5000/idrop/v0/inventories/2
 
 
@@ -408,7 +417,8 @@ Example query
 
     {
       "id": 2, 
-      "isInterpreted": false
+      "isInterpreted": false,
+      "comment": "Hello world!"
     }
 
 -----
@@ -699,6 +709,7 @@ Examples
                                       "quality": "D",
                                       "speciesCode": "SAP",
                                       "speciesId": 22,
+                                      "comment": null,
                                       "speciesName": "sapelli"},
                        "type": "Feature"},
                       {"geometry": {"coordinates": [16.39673, 1.2927], "type": "Point"},
@@ -708,6 +719,7 @@ Examples
                                       "quality": "B",
                                       "speciesCode": "SAP",
                                       "speciesId": 22,
+                                      "comment": null,
                                       "speciesName": "sapelli"},
                        "type": "Feature"},
                       {"geometry": {"coordinates": [16.23559, 1.29474],
@@ -718,6 +730,7 @@ Examples
                                       "quality": "C",
                                       "speciesCode": "AZO",
                                       "speciesId": 3,
+                                      "comment": null,
                                       "speciesName": "azobe"},
                        "type": "Feature"},
                       {"geometry": {"coordinates": [16.19604, 1.20542],
@@ -728,6 +741,7 @@ Examples
                                       "quality": "B",
                                       "speciesCode": "AZO",
                                       "speciesId": 3,
+                                      "comment": null,
                                       "speciesName": "azobe"},
                        "type": "Feature"}],
          "type": "FeatureCollection"}

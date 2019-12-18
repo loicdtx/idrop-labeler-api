@@ -73,9 +73,19 @@ FEATURE_SCHEMA = {
 UPDATE_INVENTORY_SCHEMA = {
     "type": "object",
     "properties": {
-        "isInterpreted": {"type": "boolean"}
+        "isInterpreted": {
+            "oneOf": [
+                {"type": "boolean"},
+                {"type": "null"}
+            ]
+        },
+        "comment": {
+            "oneOf": [
+                {"type": "string"},
+                {"type": "null"}
+            ]
+        }
     },
-    "required": ["isInterpreted"],
     "additionalProperties": False
 }
 
@@ -265,6 +275,14 @@ def get_neighbours():
         fc = idb.neighborhood(session, **params)
     fc['features'] = [camelify_feature(f) for f in fc['features']]
     return jsonify(fc)
+
+
+# TODO:
+# GET comments get all comments
+# GET comments/<id> get a single comment
+# PATCH comments/<id> modify an existing comment
+# POST comments Create a new comment 
+# POST comments/filter {interpreted_id, inventory_id} (one of the two or both)
 
 
 if __name__ == '__main__':
