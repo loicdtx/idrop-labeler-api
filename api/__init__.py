@@ -277,13 +277,5 @@ def get_neighbours():
     return jsonify(fc)
 
 
-# TODO:
-# GET comments get all comments
-# GET comments/<id> get a single comment
-# PATCH comments/<id> modify an existing comment
-# POST comments Create a new comment 
-# POST comments/filter {interpreted_id, inventory_id} (one of the two or both)
-
-
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
