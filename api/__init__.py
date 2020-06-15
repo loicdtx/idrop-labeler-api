@@ -270,11 +270,27 @@ def update_inventory_2(id):
 def get_neighbours():
     content = request.get_json(silent=True)
     params = {snakify(k):v for k,v in content.items()}
-    print(params)
     with session_scope() as session:
         fc = idb.neighborhood(session, **params)
     fc['features'] = [camelify_feature(f) for f in fc['features']]
     return jsonify(fc)
+
+
+@app.route('/idrop/v0/windows', methods = ['POST'])
+def get_windows():
+    content = request.get_json(silent=True)
+    params = {snakify(k):v for k,v in content.items()}
+    with session_scope() as session:
+        fc = idb.windows(session, **params)
+    fc['features'] = [camelify_feature(f) for f in fc['features']]
+    return jsonify(fc)
+
+
+@app.route('/idrop/v0/experiments', methods = ['GET'])
+def get_experiments():
+    with session_scope() as session:
+        exp_list = idb.experiments(session=session)
+    return jsonify(exp_list)
 
 
 if __name__ == '__main__':
