@@ -46,6 +46,10 @@ List of resources
 +-------------+------------------------------+---------------------------------------------------+
 | POST        | /idrop/v0/neighbours         | Seach inventory records in the neighbourhood      |
 +-------------+------------------------------+---------------------------------------------------+
+| GET         | /idrop/v0/experiments        | Get all experiments                               |
++-------------+------------------------------+---------------------------------------------------+
+| POST        | /idrop/v0/windows            | Get the training windows of a given experiment    |
++-------------+------------------------------+---------------------------------------------------+
 
 
 Details
@@ -825,6 +829,137 @@ Examples
 
 
 -----
+
+GET ``/idrop/v0/experiments``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Get all experiments. Return a list of objects
+
+
+Examples
+""""""""
+
+
+.. code-block:: bash
+
+    curl http://0.0.0.0:5005/idrop/v0/experiments
+
+
+.. code-block:: json
+
+    [{"comment":"Training windows of 1300 pixels covering aac_2019_1 and aac_2019_2","id":1,"name":"scenario_3_1300"}]
+
+
+-----
+
+POST ``/idrop/v0/windows``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Query training windows of a given experiment with option to merge spatially overlapping windows. Returns a FeatureCollection
+
+
+Parameters
+""""""""""
+
+- ``experimentId`` (int): id of the experiment related to the desired windows
+- ``union`` (bool): Whether spatially overlapping windows should be merged as a single polygon in the results
+
+
+Examples
+""""""""
+
+
+.. code-block:: bash
+
+    curl -X POST \                               
+        -H "Content-Type: application/json" \
+        -d '{"experimentId":1, "union":true}' \
+        http://0.0.0.0:5005/idrop/v0/windows
+
+
+
+.. code-block:: json
+
+    {
+    "features": [
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            15.443013547112,
+                            1.1058701327040001
+                        ],
+                        [
+                            15.442168362512001,
+                            1.1058701327040001
+                        ],
+                        [
+                            15.442168362512001,
+                            1.1067208358040002
+                        ],
+                        [
+                            15.443013547112,
+                            1.1067208358040002
+                        ],
+                        [
+                            15.443013547112,
+                            1.1058701327040001
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "properties": {
+                "allComplete": false,
+                "ids": [
+                    352
+                ]
+            }
+        },
+        {
+            "geometry": {
+                "coordinates": [
+                    [
+                        [
+                            15.446853314735998,
+                            1.105818571404
+                        ],
+                        [
+                            15.446008130135999,
+                            1.105818571404
+                        ],
+                        [
+                            15.446008130135999,
+                            1.106669274504
+                        ],
+                        [
+                            15.446853314735998,
+                            1.106669274504
+                        ],
+                        [
+                            15.446853314735998,
+                            1.105818571404
+                        ]
+                    ]
+                ],
+                "type": "Polygon"
+            },
+            "properties": {
+                "allComplete": false,
+                "ids": [
+                    30
+                ]
+            }
+        }
+    ],
+    "type": "FeatureCollection"
+    }
+
+-----
+
+
+
 
 
 HTTP status codes
