@@ -765,6 +765,7 @@ Parameters
 - ``nSamples`` (int or null): Maximum number of features in the returned feature collection
 - ``speciesId`` (int or null): Restrict to a single species
 - ``inventoryId`` (int or null): Restrict search results to a single inventoryId (resulting feature collection should have a max length of 1)
+- ``spatialFilter`` (object or null): A spatial filter object (must contain lat, lon, and radius (in meters) properties). Only interpreted records that intersect with the circle created are returned.
 
 
 Examples
@@ -775,7 +776,7 @@ Examples
 
     curl -X POST \
             -H "Content-Type: application/json" \
-            -d '{"nSamples": 10}' \
+            -d '{"nSamples": 10, "spatialFilter": {"lat": 1.1309, "lon": 15.4678, "radius": 60}}' \
             http://0.0.0.0:5000/idrop/v0/interpreted/filter
 
 
