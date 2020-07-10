@@ -38,6 +38,18 @@ INVENTORY_QUERY_SCHEMA = {
                 {"type": "boolean"},
                 {"type": "null"}
             ]
+        },
+        "spatialFilter": {
+            "oneOf": [
+                {"type": "object",
+                 "properties": {
+                    "lat": {"type": "number"},
+                    "lon": {"type": "number"},
+                    "radius": {"type": "number"}
+                 }
+                },
+                {"type": "null"}
+            ]
         }
     },
     "additionalProperties": False
