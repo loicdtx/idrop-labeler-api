@@ -50,6 +50,8 @@ List of resources
 +-------------+------------------------------+---------------------------------------------------+
 | POST        | /idrop/v0/windows            | Get the training windows of a given experiment    |
 +-------------+------------------------------+---------------------------------------------------+
+| PATCH       | /idrop/v0/windows            | Update the complete property of a list of windows |
++-------------+------------------------------+---------------------------------------------------+
 
 
 Details
@@ -958,6 +960,36 @@ Examples
     ],
     "type": "FeatureCollection"
     }
+
+-----
+
+PATCH ``/idrop/v0/windows``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Update the ``complete`` field of a list of windows. 
+
+Parameters
+""""""""""
+
+- ``ids`` (array): The ``id``s of the windows to be updated
+- ``complete`` (bool): Whether the ``complete`` property of the targetted windows should be set to ``true`` or ``false``
+
+
+Example query
+"""""""""""""
+
+
+.. code-block:: bash
+
+    curl -X PATCH \
+        -H "Content-Type: application/json" \
+        -d '{"ids": [7,8,9], "complete": true}' \
+        http://0.0.0.0:5005/idrop/v0/windows
+
+
+.. code-block:: json
+
+    {"complete":true,"ids":[7,8,9]}
 
 -----
 

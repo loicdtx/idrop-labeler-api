@@ -305,5 +305,18 @@ def get_experiments():
     return jsonify(exp_list)
 
 
+@app.route('/idrop/v0/windows', methods = ['PATCH'])
+def update_windows():
+    content = request.get_json(silent=True)
+    if content is None:
+        abort(400)
+    params = {snakify(k):v for k,v in content.items()}
+    with session_scope() as session:
+        updated = idb.update_trainwindows(session=session, **params)
+    if updated == 0:
+        abort(400)
+    return jsonify({camelify(k):v for k,v in params.items()})
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
